@@ -1,5 +1,0 @@
-.env
-
-public/pdfs/*
-!public/pdfs/sample1.pdf
-!public/pdfs/sample2.pdf
