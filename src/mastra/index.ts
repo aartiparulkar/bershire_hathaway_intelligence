@@ -6,6 +6,8 @@ import { Observability, DefaultExporter, CloudExporter, SensitiveDataFilter } fr
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
+// index.ts or bootstrap file
+import { initDb } from "./db/init";
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow },
@@ -35,3 +37,23 @@ export const mastra = new Mastra({
     },
   }),
 });
+
+await initDb();
+
+// import express from "express";
+// import { env } from "./config/env";
+
+// const app = express();
+
+// app.use(express.json());
+
+// app.get("/health", (_req, res) => {
+//   res.status(200).json({
+//     status: "ok",
+//     env: env.APP_ENV
+//   });
+// });
+
+// app.listen(env.PORT, () => {
+//   console.log(`Server running on port ${env.PORT}`);
+// });
