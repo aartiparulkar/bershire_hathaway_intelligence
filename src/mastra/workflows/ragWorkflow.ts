@@ -1,6 +1,6 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-
+import { ragAgent } from "../agents/ragAgent.js";
 import { answerQuestion } from "../generation/answer.js";
 
 
@@ -38,6 +38,8 @@ const answerQuestionStep = createStep({
     return { answer };
   }
 });
+
+
 
 export const ragWorkflow = createWorkflow({
   id: "rag-workflow",

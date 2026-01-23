@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { env } from "../config/env";
+import { ragAgent } from "../agents/ragAgent.js";
 
 const client = new OpenAI({
   apiKey: env.OPENAI_API_KEY

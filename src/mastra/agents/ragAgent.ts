@@ -1,11 +1,12 @@
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
+import { generateAnswer } from '../generation/generate';
 
 import { z } from "zod";
 
 export const ragAgent = new Agent({
-  id: 'weather-agent',
-  name: 'Weather Agent',
+  id: 'ragAgent',
+  name: 'Warren Buffett RAG Agent',
   instructions: `
 You are a knowledgeable financial analyst specializing in Warren Buffett's investment philosophy and Berkshire Hathaway's business strategy. 
 Your expertise comes from analyzing years of Berkshire Hathaway annual shareholder letters.

@@ -1,8 +1,8 @@
-import { answerQuestion } from "./answer";
+import { answerQuestion } from "./answer.js";
 
 async function test() {
   const answer = await answerQuestion(
-    "What is this document about?"
+    "What is the capital of France?"
   );
 
   console.log("Answer:");
