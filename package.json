@@ -10,7 +10,8 @@
     "ingest": "tsx src/mastra/ingestion/run.ts",
     "retrieve:test": "tsx src/mastra/retrieval/test.ts",
     "context:test": "tsx src/mastra/retrieval/contestTest.ts",
-    "generate:test": "tsx src/mastra/generation/test.ts"
+    "generate:test": "tsx src/mastra/generation/test.ts",
+    "agent:test": "tsx src/mastra/agents/test.ts"
   },
   "keywords": [],
   "author": "",
