@@ -3,7 +3,7 @@ import path from "path";
 import { db } from "../db/client.js";
 import { chunkText } from "./chunker.js";
 import { embedText } from "./embeddings.js";
-
+import { PDFParse } from 'pdf-parse';
 
 export async function ingestMultipleDocuments(folderPath: string) {
   try {
@@ -20,7 +20,7 @@ export async function ingestMultipleDocuments(folderPath: string) {
     console.log(`Found ${supportedFiles.length} documents to ingest...`);
 
     for (const file of supportedFiles) {
-      const filePath = path.join(process.cwd(), "public", "Berkshire_Hathaway_Shareholder_Letters");
+      const filePath = path.join(folderPath, file);
       const documentId = path.parse(file).name; // Use filename without extension as documentId
       console.log(filePath);
       try {
@@ -45,6 +45,12 @@ export async function ingestMultipleDocuments(folderPath: string) {
         for (let i = 0; i < chunks.length; i++) {
           const embedding = await embedText(chunks[i]);
 
+          console.log(
+            Array.isArray(embedding),
+            typeof embedding[0],
+            embedding.length
+          );
+
           await db.query(
             `
             INSERT INTO document_chunks
@@ -55,7 +61,7 @@ export async function ingestMultipleDocuments(folderPath: string) {
               documentId,
               i,
               chunks[i],
-              embedding,
+              `[${embedding.join(",")}]`,
               { source: file, ingested_at: new Date().toISOString() }
             ]
           );
@@ -77,10 +83,17 @@ export async function ingestMultipleDocuments(folderPath: string) {
 
 async function extractTextFromPDF(filePath: string): Promise<string> {
   try {
-    const { default: pdfParse } = await import("pdf-parse");
-    const fileBuffer = await fs.readFileSync(filePath);
-    const pdfData = pdfParse(fileBuffer);
-    return pdfData.text;
+    const buffer = fs.readFileSync(filePath);
+    const uint8Array = new Uint8Array(
+      buffer.buffer,
+      buffer.byteOffset,
+      buffer.byteLength
+    );
+
+    const pdfParse = new PDFParse(uint8Array);  
+
+    const data = await pdfParse.getText()
+    return data.text;
   } catch (error) {
     console.error(`Error extracting text from PDF ${filePath}:`, error);
     return "";
