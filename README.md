@@ -1,6 +1,21 @@
 # berkshire_hathaway_intelligence
 
+## Architecture Diagram
+
+The architecture has three main parts: **document preparation, question answering, and the Mastra application shell.**
+
+The **offline document preparation** pipeline processes all Berkshire Hathaway shareholder-letter PDFs before any user question is asked. The PDFs are converted to text, split into smaller chunks, converted into embeddings using OpenAI, and stored in **PostgreSQL with pgvector**.
+
+When a user asks a question, the **online RAG pipeline** validates it, creates an embedding for the question, and searches PostgreSQL for the **five most similar document chunks**. Those chunks are combined into a limited context, used to build a grounded prompt, and then sent to **gpt-4o-mini** to generate the final answer.
+
+**The Mastra application shell** initializes the application components. It registers the `ragWorkflow`, the separate `ragAgent`, and the in-memory Mastra storage. The current question-answering path is handled by the workflow-based RAG pipeline.
+
+<p align="center">
+  <img width="900" alt="berkshire_hathaway_architecture" src="https://github.com/user-attachments/assets/5b301a97-0895-4739-9995-27a6ee2724c3" />
+</p>
+
 Welcome to your new [Mastra](https://mastra.ai/) project! We're excited to see what you'll build.
+
 
 ## Getting Started
 
